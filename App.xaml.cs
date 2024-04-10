@@ -55,11 +55,11 @@ namespace TankIconMaker
         {
             // Configure Classify. This goes before the post-build check because it depends on it
             Classify.DefaultOptions = new ClassifyOptions()
-                .AddTypeOptions(typeof(W.Color), new colorTypeOptions())
-                .AddTypeOptions(typeof(D.Color), new colorTypeOptions())
+                .AddTypeOptions(typeof(W.Color), new ColorTypeOptions())
+                .AddTypeOptions(typeof(D.Color), new ColorTypeOptions())
                 .AddTypeOptions(typeof(Filename), new filenameTypeOptions())
-                .AddTypeOptions(typeof(ObservableCollection<LayerBase>), new listLayerBaseOptions())
-                .AddTypeOptions(typeof(ObservableCollection<EffectBase>), new listEffectBaseOptions());
+                .AddTypeOptions(typeof(ObservableCollection<LayerBase>), new ListLayerBaseOptions())
+                .AddTypeOptions(typeof(ObservableCollection<EffectBase>), new ListEffectBaseOptions());
 
             if (args.Length == 2 && args[0] == "--post-build-check")
                 return RT.Util.Ut.RunPostBuildChecks(args[1], Assembly.GetExecutingAssembly());

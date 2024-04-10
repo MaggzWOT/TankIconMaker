@@ -52,12 +52,12 @@ namespace TankIconMaker
         public LayerBase()
         {
             Effects = new ObservableCollection<EffectBase>();
-            Effects.CollectionChanged += updateEffectLayer;
+            Effects.CollectionChanged += UpdateEffectLayer;
             Visible = true;
             VisibleFor = new ValueSelector<BoolWithPassthrough>(BoolWithPassthrough.Yes);
         }
 
-        private void updateEffectLayer(object sender, NotifyCollectionChangedEventArgs e)
+        private void UpdateEffectLayer(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
                 foreach (var item in e.NewItems.OfType<EffectBase>())
@@ -106,8 +106,8 @@ namespace TankIconMaker
                     Effects.Insert(0, e);
                 }
             }
-            Effects.CollectionChanged -= updateEffectLayer;
-            Effects.CollectionChanged += updateEffectLayer;
+            Effects.CollectionChanged -= UpdateEffectLayer;
+            Effects.CollectionChanged += UpdateEffectLayer;
         }
 
         [ClassifyIgnore, Browsable(false)]
@@ -123,7 +123,7 @@ namespace TankIconMaker
             result.TreeViewItem = null;
             result.VisibleFor = VisibleFor.Clone();
             result.Effects = new ObservableCollection<EffectBase>();
-            result.Effects.CollectionChanged += result.updateEffectLayer;
+            result.Effects.CollectionChanged += result.UpdateEffectLayer;
             foreach (var e in Effects)
                 result.Effects.Add(e.Clone());
             return result;

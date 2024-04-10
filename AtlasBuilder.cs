@@ -37,7 +37,7 @@ namespace TankIconMaker
             }
         }
 
-        private WotContext context;
+        private readonly WotContext context;
         private int HeighAtlas = 0;
         public AtlasBuilder(WotContext CurContext)
         {

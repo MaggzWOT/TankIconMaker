@@ -34,7 +34,7 @@ namespace TankIconMaker
         private Thread _thread = null;
         private bool _multithreadedReading = false;
 
-        private void acquire(bool write)
+        private void Acquire(bool write)
         {
             if (_acquiresRead == int.MinValue)
                 throw new ObjectDisposedException("BitmapBase");
@@ -73,7 +73,7 @@ namespace TankIconMaker
                 _acquiresRead++;
         }
 
-        private void release(bool write)
+        private void Release(bool write)
         {
             if (_acquiresRead == int.MinValue) // a manual dispose followed by a manual release: tell the programmer they messed up
                 throw new ObjectDisposedException("BitmapBase");
@@ -106,16 +106,16 @@ namespace TankIconMaker
 
         public struct BitmapReadReleaser : IDisposable
         {
-            private BitmapBase _bmp;
-            public BitmapReadReleaser(BitmapBase bitmap) { _bmp = bitmap; lock (_bmp) _bmp.acquire(write: false); }
-            public void Dispose() { lock (_bmp) _bmp.release(write: false); }
+            private readonly BitmapBase _bmp;
+            public BitmapReadReleaser(BitmapBase bitmap) { _bmp = bitmap; lock (_bmp) _bmp.Acquire(write: false); }
+            public void Dispose() { lock (_bmp) _bmp.Release(write: false); }
         }
 
         public struct BitmapWriteReleaser : IDisposable
         {
-            private BitmapBase _bmp;
-            public BitmapWriteReleaser(BitmapBase bitmap) { _bmp = bitmap; lock (_bmp) _bmp.acquire(write: true); }
-            public void Dispose() { lock (_bmp) _bmp.release(write: true); }
+            private readonly BitmapBase _bmp;
+            public BitmapWriteReleaser(BitmapBase bitmap) { _bmp = bitmap; lock (_bmp) _bmp.Acquire(write: true); }
+            public void Dispose() { lock (_bmp) _bmp.Release(write: true); }
         }
 
         public virtual void Dispose()
@@ -743,7 +743,7 @@ namespace TankIconMaker
 
     sealed unsafe class BitmapRam : BitmapBase
     {
-        private byte[] _bytes;
+        private readonly byte[] _bytes;
         private GCHandle _handle;
 
         public BitmapRam(int width, int height)
@@ -918,10 +918,10 @@ namespace TankIconMaker
         {
             _refCount--;
             if (_refCount <= 0)
-                destroy();
+                Destroy();
         }
 
-        private void destroy()
+        private void Destroy()
         {
             if (!_destroyed)
             {
@@ -933,13 +933,13 @@ namespace TankIconMaker
 
         ~SharedPinnedByteArray()
         {
-            destroy();
+            Destroy();
         }
     }
 
     sealed class BitmapWpf : BitmapBase
     {
-        private WriteableBitmap _bitmap;
+        private readonly WriteableBitmap _bitmap;
 
         public BitmapWpf(int width, int height)
         {

@@ -202,7 +202,7 @@ namespace TankIconMaker
                 byte* endResult = ptrResult + width * 4;
                 for (; ptrResult < endResult; ptrLeft += 4, ptrRight += 4, ptrResult += 4)
                 {
-                    double rightRatio = blendRightRatio(*(ptrLeft + 3), *(ptrRight + 3), rightAmount);
+                    double rightRatio = BlendRightRatio(*(ptrLeft + 3), *(ptrRight + 3), rightAmount);
                     double leftRatio = 1 - rightRatio;
 
                     *(ptrResult + 0) = (byte) (*(ptrLeft + 0) * leftRatio + *(ptrRight + 0) * rightRatio);
@@ -322,9 +322,9 @@ namespace TankIconMaker
 
     class GaussianBlur
     {
-        private int _radius;
-        private int[] _kernel;
-        private int _kernelSum;
+        private readonly int _radius;
+        private readonly int[] _kernel;
+        private readonly int _kernelSum;
 
         public double Radius { get; private set; }
 
@@ -392,7 +392,7 @@ namespace TankIconMaker
                                 case BlurEdgeMode.Mirror:
                                     if (xRead < 0)
                                         xRead = -xRead - 1;
-                                    xRead = xRead % (2 * src.Width);
+                                    xRead %= (2 * src.Width);
                                     if (xRead >= src.Width)
                                         xRead = 2 * src.Width - xRead - 1;
                                     break;
@@ -439,7 +439,7 @@ namespace TankIconMaker
                                 case BlurEdgeMode.Mirror:
                                     if (yRead < 0)
                                         yRead = -yRead - 1;
-                                    yRead = yRead % (2 * src.Height);
+                                    yRead %= (2 * src.Height);
                                     if (yRead >= src.Height)
                                         yRead = 2 * src.Height - yRead - 1;
                                     break;

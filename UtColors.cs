@@ -9,7 +9,7 @@ namespace TankIconMaker
         /// <summary>Blends two colors. If the amount is 0, only the left color is present. If it's 1, only the right is present.</summary>
         public static Color BlendColors(Color left, Color right, double rightAmount)
         {
-            double rightRatio = blendRightRatio(left.A, right.A, rightAmount);
+            double rightRatio = BlendRightRatio(left.A, right.A, rightAmount);
             return Color.FromArgb(
                 a: (byte) Math.Round(left.A * (1 - rightAmount) + right.A * rightAmount),
                 r: (byte) Math.Round(left.R * (1 - rightRatio) + right.R * rightRatio),
@@ -20,7 +20,7 @@ namespace TankIconMaker
         /// <summary>Blends two colors. If the amount is 0, only the left color is present. If it's 1, only the right is present.</summary>
         public static D.Color BlendColors(D.Color left, D.Color right, double rightAmount)
         {
-            double rightRatio = blendRightRatio(left.A, right.A, rightAmount);
+            double rightRatio = BlendRightRatio(left.A, right.A, rightAmount);
             return D.Color.FromArgb(
                 alpha: (byte) Math.Round(left.A * (1 - rightAmount) + right.A * rightAmount),
                 red: (byte) Math.Round(left.R * (1 - rightRatio) + right.R * rightRatio),
@@ -29,7 +29,7 @@ namespace TankIconMaker
         }
 
         /// <summary>Calculates the blend ratio for blending colors with arbitrary alpha values.</summary>
-        private static double blendRightRatio(byte leftAlpha, byte rightAlpha, double rightAmount)
+        private static double BlendRightRatio(byte leftAlpha, byte rightAlpha, double rightAmount)
         {
             if (leftAlpha < rightAlpha)
                 return 1.0 - 2.0 * leftAlpha / (double) (leftAlpha + rightAlpha) * (1.0 - rightAmount);

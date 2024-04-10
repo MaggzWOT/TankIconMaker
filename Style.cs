@@ -139,10 +139,10 @@ namespace TankIconMaker
         public Style()
         {
             Kind = StyleKind.User;
-            Layers.CollectionChanged += updateLayerStyle;
+            Layers.CollectionChanged += UpdateLayerStyle;
         }
 
-        void updateLayerStyle(object sender, NotifyCollectionChangedEventArgs e)
+        void UpdateLayerStyle(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
                 foreach (var item in e.NewItems.OfType<LayerBase>())
@@ -185,7 +185,7 @@ namespace TankIconMaker
             var result = MemberwiseClone() as Style;
             result.PropertyChanged = (_, __) => { };
             result.Layers = new ObservableCollection<LayerBase>();
-            result.Layers.CollectionChanged += result.updateLayerStyle;
+            result.Layers.CollectionChanged += result.UpdateLayerStyle;
             foreach (var l in Layers)
                 result.Layers.Add(l.Clone());
             return result;
@@ -195,8 +195,8 @@ namespace TankIconMaker
         {
             foreach (var layer in Layers)
                 layer.ParentStyle = this;
-            Layers.CollectionChanged -= updateLayerStyle;
-            Layers.CollectionChanged += updateLayerStyle;
+            Layers.CollectionChanged -= UpdateLayerStyle;
+            Layers.CollectionChanged += UpdateLayerStyle;
         }
 
         public void AfterSerialize(XElement xml) { }

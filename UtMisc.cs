@@ -561,8 +561,7 @@ namespace TankIconMaker
             while (exception != null)
             {
                 errorInfo.AppendFormat("\nException: {0}", exception.GetType());
-                var excp = exception as Exception;
-                if (excp != null)
+                if (exception is Exception excp)
                 {
                     errorInfo.AppendFormat("\nMessage: {0}\n", excp.Message);
                     errorInfo.AppendLine(Ut.CollapseStackTrace(excp.StackTrace));
@@ -584,9 +583,9 @@ namespace TankIconMaker
         public static PriorityScheduler BelowNormal = new PriorityScheduler(ThreadPriority.BelowNormal);
         public static PriorityScheduler Lowest = new PriorityScheduler(ThreadPriority.Lowest);
 
-        private BlockingCollection<Task> _tasks = new BlockingCollection<Task>();
+        private readonly BlockingCollection<Task> _tasks = new BlockingCollection<Task>();
         private Thread[] _threads;
-        private ThreadPriority _priority;
+        private readonly ThreadPriority _priority;
         private readonly int _maximumConcurrencyLevel = Math.Max(1, Environment.ProcessorCount);
 
         public PriorityScheduler(ThreadPriority priority)
@@ -617,10 +616,12 @@ namespace TankIconMaker
                     {
                         foreach (Task t in _tasks.GetConsumingEnumerable())
                             base.TryExecuteTask(t);
-                    });
-                    _threads[i].Name = string.Format("PriorityScheduler: {0}", i);
-                    _threads[i].Priority = _priority;
-                    _threads[i].IsBackground = true;
+                    })
+                    {
+                        Name = string.Format("PriorityScheduler: {0}", i),
+                        Priority = _priority,
+                        IsBackground = true
+                    };
                     _threads[i].Start();
                 }
             }
@@ -710,51 +711,51 @@ namespace TankIconMaker
 
         internal static void Tests()
         {
-            test(new CompositePath(null, @""), @"", null);
-            test(new CompositePath(null, @"foo"), @"foo", null);
-            test(new CompositePath(null, @"foo/bar"), @"foo/bar", null);
-            test(new CompositePath(null, @"\foo\bar"), @"\foo\bar", null);
-            test(new CompositePath(null, @"C:\foo\bar"), @"C:\foo\bar", null);
+            Test(new CompositePath(null, @""), @"", null);
+            Test(new CompositePath(null, @"foo"), @"foo", null);
+            Test(new CompositePath(null, @"foo/bar"), @"foo/bar", null);
+            Test(new CompositePath(null, @"\foo\bar"), @"\foo\bar", null);
+            Test(new CompositePath(null, @"C:\foo\bar"), @"C:\foo\bar", null);
 
-            test(new CompositePath(null, @"foo\bar", @"thingy\blah"), @"foo\bar\thingy\blah", null);
-            test(new CompositePath(null, @"foo\bar\", @"thingy\blah"), @"foo\bar\thingy\blah", null);
-            test(new CompositePath(null, @"foo\bar", @"thingy\blah", @"stuff"), @"foo\bar\thingy\blah\stuff", null);
-            test(new CompositePath(null, @"foo\bar", @"thingy\blah", @"D:\stuff"), @"D:\stuff", null);
+            Test(new CompositePath(null, @"foo\bar", @"thingy\blah"), @"foo\bar\thingy\blah", null);
+            Test(new CompositePath(null, @"foo\bar\", @"thingy\blah"), @"foo\bar\thingy\blah", null);
+            Test(new CompositePath(null, @"foo\bar", @"thingy\blah", @"stuff"), @"foo\bar\thingy\blah\stuff", null);
+            Test(new CompositePath(null, @"foo\bar", @"thingy\blah", @"D:\stuff"), @"D:\stuff", null);
 
-            test(new CompositePath(null, @"C:\foo\bar", @"thingy"), @"C:\foo\bar\thingy", null);
-            test(new CompositePath(null, @"C:\foo\bar", @"thingy", @"stuff"), @"C:\foo\bar\thingy\stuff", null);
-            test(new CompositePath(null, @"C:\foo\bar", @"thingy", @"D:\stuff"), @"D:\stuff", null);
+            Test(new CompositePath(null, @"C:\foo\bar", @"thingy"), @"C:\foo\bar\thingy", null);
+            Test(new CompositePath(null, @"C:\foo\bar", @"thingy", @"stuff"), @"C:\foo\bar\thingy\stuff", null);
+            Test(new CompositePath(null, @"C:\foo\bar", @"thingy", @"D:\stuff"), @"D:\stuff", null);
 
 
-            test(new CompositePath(null, @"|"), @"", @"");
-            test(new CompositePath(null, @"fo|o"), @"fo", @"o");
-            test(new CompositePath(null, @"fo|o/bar"), @"fo", @"o/bar");
-            test(new CompositePath(null, @"foo/b|ar"), @"foo/b", @"ar");
-            test(new CompositePath(null, @"C:\fo|o\bar"), @"C:\fo", @"o\bar");
-            test(new CompositePath(null, @"C:\foo\b|ar"), @"C:\foo\b", @"ar");
+            Test(new CompositePath(null, @"|"), @"", @"");
+            Test(new CompositePath(null, @"fo|o"), @"fo", @"o");
+            Test(new CompositePath(null, @"fo|o/bar"), @"fo", @"o/bar");
+            Test(new CompositePath(null, @"foo/b|ar"), @"foo/b", @"ar");
+            Test(new CompositePath(null, @"C:\fo|o\bar"), @"C:\fo", @"o\bar");
+            Test(new CompositePath(null, @"C:\foo\b|ar"), @"C:\foo\b", @"ar");
 
-            test(new CompositePath(null, @"foo\b|ar", @"thingy\blah"), @"foo\b", @"ar\thingy\blah");
-            test(new CompositePath(null, @"foo\b|ar\", @"thingy\blah"), @"foo\b", @"ar\thingy\blah");
-            test(new CompositePath(null, @"foo\b|ar", @"thingy\blah", @"stuff"), @"foo\b", @"ar\thingy\blah\stuff");
-            test(new CompositePath(null, @"D:\foo\b|ar", @"thingy\blah", @"stuff"), @"D:\foo\b", @"ar\thingy\blah\stuff");
+            Test(new CompositePath(null, @"foo\b|ar", @"thingy\blah"), @"foo\b", @"ar\thingy\blah");
+            Test(new CompositePath(null, @"foo\b|ar\", @"thingy\blah"), @"foo\b", @"ar\thingy\blah");
+            Test(new CompositePath(null, @"foo\b|ar", @"thingy\blah", @"stuff"), @"foo\b", @"ar\thingy\blah\stuff");
+            Test(new CompositePath(null, @"D:\foo\b|ar", @"thingy\blah", @"stuff"), @"D:\foo\b", @"ar\thingy\blah\stuff");
 
-            test(new CompositePath(null, @"foo\bar", @"thin|gy\blah"), @"foo\bar\thin", @"gy\blah");
-            test(new CompositePath(null, @"foo\bar\", @"thin|gy\blah"), @"foo\bar\thin", @"gy\blah");
-            test(new CompositePath(null, @"foo\bar", @"thin|gy\blah", @"stuff"), @"foo\bar\thin", @"gy\blah\stuff");
-            test(new CompositePath(null, @"foo\bar", @"D:\thin|gy\blah", @"stuff"), @"D:\thin", @"gy\blah\stuff");
+            Test(new CompositePath(null, @"foo\bar", @"thin|gy\blah"), @"foo\bar\thin", @"gy\blah");
+            Test(new CompositePath(null, @"foo\bar\", @"thin|gy\blah"), @"foo\bar\thin", @"gy\blah");
+            Test(new CompositePath(null, @"foo\bar", @"thin|gy\blah", @"stuff"), @"foo\bar\thin", @"gy\blah\stuff");
+            Test(new CompositePath(null, @"foo\bar", @"D:\thin|gy\blah", @"stuff"), @"D:\thin", @"gy\blah\stuff");
 
-            test(new CompositePath(null, @"foo\bar", @"thingy\blah", @"stu|ff"), @"foo\bar\thingy\blah\stu", @"ff");
-            test(new CompositePath(null, @"foo\bar", @"thingy\blah", @"D:\stu|ff"), @"D:\stu", @"ff");
+            Test(new CompositePath(null, @"foo\bar", @"thingy\blah", @"stu|ff"), @"foo\bar\thingy\blah\stu", @"ff");
+            Test(new CompositePath(null, @"foo\bar", @"thingy\blah", @"D:\stu|ff"), @"D:\stu", @"ff");
 
-            test(new CompositePath(null, @"C:\fo|o\bar", @"thingy"), @"C:\fo", @"o\bar\thingy");
-            test(new CompositePath(null, @"C:\foo\bar", @"thin|gy"), @"C:\foo\bar\thin", @"gy");
-            test(new CompositePath(null, @"C:\fo|o\bar", @"thingy", @"stuff"), @"C:\fo", @"o\bar\thingy\stuff");
-            test(new CompositePath(null, @"C:\foo\bar", @"thin|gy", @"stuff"), @"C:\foo\bar\thin", @"gy\stuff");
-            test(new CompositePath(null, @"C:\foo\bar", @"thingy", @"stu|ff"), @"C:\foo\bar\thingy\stu", @"ff");
-            test(new CompositePath(null, @"C:\foo\bar", @"thingy", @"D:\stu|ff"), @"D:\stu", @"ff");
+            Test(new CompositePath(null, @"C:\fo|o\bar", @"thingy"), @"C:\fo", @"o\bar\thingy");
+            Test(new CompositePath(null, @"C:\foo\bar", @"thin|gy"), @"C:\foo\bar\thin", @"gy");
+            Test(new CompositePath(null, @"C:\fo|o\bar", @"thingy", @"stuff"), @"C:\fo", @"o\bar\thingy\stuff");
+            Test(new CompositePath(null, @"C:\foo\bar", @"thin|gy", @"stuff"), @"C:\foo\bar\thin", @"gy\stuff");
+            Test(new CompositePath(null, @"C:\foo\bar", @"thingy", @"stu|ff"), @"C:\foo\bar\thingy\stu", @"ff");
+            Test(new CompositePath(null, @"C:\foo\bar", @"thingy", @"D:\stu|ff"), @"D:\stu", @"ff");
         }
 
-        private static void test(CompositePath cf, string expectedPath, string expectedInnerPath)
+        private static void Test(CompositePath cf, string expectedPath, string expectedInnerPath)
         {
             if (cf.File != expectedPath || cf.InnerFile != expectedInnerPath)
                 throw new Exception("CompositePath test failed.");

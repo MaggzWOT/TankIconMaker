@@ -75,7 +75,7 @@ namespace TankIconMaker
         public static MemberTr SingleTr(Translation tr) { return new MemberTr(tr.Selector.Single, tr.Selector.SingleDescription); }
 
         public SelectorBase()
-            : this(default(T))
+            : this(default)
         {
         }
 
@@ -119,13 +119,13 @@ namespace TankIconMaker
         public T Tier10 { get; set; }
         public static MemberTr Tier10Tr(Translation tr) { return new MemberTr(tr.Selector.TierN.Fmt(10)); }
 
-        public static MemberTr ByTr(Translation tr) { return new MemberTr(tr.Selector.By, getDescriptionString(tr).Fmt(2)); }
-        public static MemberTr By2Tr(Translation tr) { return new MemberTr(tr.Selector.ByN.Fmt(2), getDescriptionString(tr).Fmt(3)); }
-        public static MemberTr By3Tr(Translation tr) { return new MemberTr(tr.Selector.ByN.Fmt(3), getDescriptionString(tr).Fmt(4)); }
-        public static MemberTr By4Tr(Translation tr) { return new MemberTr(tr.Selector.ByN.Fmt(4), getDescriptionLastString(tr)); }
+        public static MemberTr ByTr(Translation tr) { return new MemberTr(tr.Selector.By, GetDescriptionString(tr).Fmt(2)); }
+        public static MemberTr By2Tr(Translation tr) { return new MemberTr(tr.Selector.ByN.Fmt(2), GetDescriptionString(tr).Fmt(3)); }
+        public static MemberTr By3Tr(Translation tr) { return new MemberTr(tr.Selector.ByN.Fmt(3), GetDescriptionString(tr).Fmt(4)); }
+        public static MemberTr By4Tr(Translation tr) { return new MemberTr(tr.Selector.ByN.Fmt(4), GetDescriptionLastString(tr)); }
 
         public ValueSelector()
-            : this(default(T))
+            : this(default)
         {
         }
 
@@ -137,16 +137,16 @@ namespace TankIconMaker
 
         public T GetValue(Tank tank)
         {
-            var result = getValue(tank, By);
-            if (!isPassthrough(result)) return result;
-            result = getValue(tank, By2);
-            if (!isPassthrough(result)) return result;
-            result = getValue(tank, By3);
-            if (!isPassthrough(result)) return result;
-            return getValue(tank, By4);
+            var result = GetValue(tank, By);
+            if (!IsPassthrough(result)) return result;
+            result = GetValue(tank, By2);
+            if (!IsPassthrough(result)) return result;
+            result = GetValue(tank, By3);
+            if (!IsPassthrough(result)) return result;
+            return GetValue(tank, By4);
         }
 
-        private T getValue(Tank tank, SelectBy by)
+        private T GetValue(Tank tank, SelectBy by)
         {
             switch (by)
             {
@@ -174,7 +174,7 @@ namespace TankIconMaker
             }
         }
 
-        private static bool isPassthrough(T result)
+        private static bool IsPassthrough(T result)
         {
             if (typeof(T) == typeof(string) && (string) (object) result == "")
                 return true;
@@ -185,7 +185,7 @@ namespace TankIconMaker
             return false;
         }
 
-        private static TrString getDescriptionString(Translation tr)
+        private static TrString GetDescriptionString(Translation tr)
         {
             if (typeof(T) == typeof(string))
                 return tr.Selector.By_String_Description;
@@ -196,7 +196,7 @@ namespace TankIconMaker
             throw new Exception("397fh2k3");
         }
 
-        private static TrString getDescriptionLastString(Translation tr)
+        private static TrString GetDescriptionLastString(Translation tr)
         {
             if (typeof(T) == typeof(string))
                 return tr.Selector.By_String_DescriptionLast;
@@ -248,16 +248,16 @@ namespace TankIconMaker
         public Color GetColorWpf(Tank tank)
         {
             var passthrough = Color.FromArgb(0, 0, 0, 0);
-            var result = getColor(tank, By);
+            var result = GetColor(tank, By);
             if (result != passthrough) return result;
-            result = getColor(tank, By2);
+            result = GetColor(tank, By2);
             if (result != passthrough) return result;
-            result = getColor(tank, By3);
+            result = GetColor(tank, By3);
             if (result != passthrough) return result;
-            return getColor(tank, By4);
+            return GetColor(tank, By4);
         }
 
-        private Color getColor(Tank tank, SelectBy by)
+        private Color GetColor(Tank tank, SelectBy by)
         {
             switch (by)
             {

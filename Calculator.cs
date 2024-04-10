@@ -61,9 +61,9 @@ namespace TankIconMaker
                 ConsumeWhitespace();
                 double right = ParseExpressionMul();
                 if (op == '+')
-                    left = left + right;
+                    left += right;
                 else if (op == '-')
-                    left = left - right;
+                    left -= right;
                 else
                     throw new Exception();
             }
@@ -81,9 +81,9 @@ namespace TankIconMaker
                 ConsumeWhitespace();
                 double right = ParseExpressionPwr();
                 if (op == '*')
-                    left = left * right;
+                    left *= right;
                 else if (op == '/')
-                    left = left / right;
+                    left /= right;
                 else if (op == '%')
                     left = Math.IEEERemainder(left, right);
                 else
@@ -94,8 +94,10 @@ namespace TankIconMaker
         private double ParseExpressionPwr()
         {
             // Power expressions are right-associative, so must parse them all first
-            var sequence = new List<double>();
-            sequence.Add(ParseExpressionPrimary()); // the first primary is mandatory
+            var sequence = new List<double>
+            {
+                ParseExpressionPrimary() // the first primary is mandatory
+            };
             while (true)
             {
                 if (Cur != '^')
@@ -150,8 +152,7 @@ namespace TankIconMaker
                         Pos++;
                 }
                 string num = Input.Substring(fromPos, Pos - fromPos);
-                double result;
-                if (!double.TryParse(num, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out result))
+                if (!double.TryParse(num, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double result))
                     throw NewParseException(App.Translation.Calculator.Err_CannotParseNumber.Fmt(num));
                 ConsumeWhitespace();
                 return result;
@@ -217,7 +218,7 @@ namespace TankIconMaker
         protected virtual double EvalFunction(string function)
         {
             List<double> parameters = null;
-            Action<int, int> parseParams = (int minRequired, int maxRequired) =>
+            void parseParams(int minRequired, int maxRequired)
             {
                 parameters = ParseParameters();
                 if (minRequired == maxRequired && minRequired != -1 && parameters.Count != minRequired)
@@ -226,7 +227,7 @@ namespace TankIconMaker
                     throw NewParseException(App.Translation.Calculator.Err_FunctionParamCountAtLeast.Fmt(App.Translation, function, minRequired, parameters.Count));
                 else if (maxRequired != -1 && parameters.Count > maxRequired)
                     throw NewParseException(App.Translation.Calculator.Err_FunctionParamCountAtMost.Fmt(App.Translation, function, maxRequired, parameters.Count));
-            };
+            }
             switch (function.ToLower())
             {
                 case "sqrt": parseParams(1, 1); return Math.Sqrt(parameters[0]);

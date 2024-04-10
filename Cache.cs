@@ -12,7 +12,7 @@ namespace TankIconMaker
     /// <summary>A strongly-typed wrapper around <see cref="WeakReference"/>.</summary>
     struct WeakReference<T> where T : class
     {
-        private WeakReference _ref;
+        private readonly WeakReference _ref;
         public WeakReference(T value) { _ref = new WeakReference(value); }
         public T Target { get { return _ref == null ? null : (T) _ref.Target; } }
         public bool IsAlive { get { return _ref != null && _ref.IsAlive; } }
@@ -36,9 +36,9 @@ namespace TankIconMaker
         /// <summary>Keeps track of various information related to the cache entry, as well as a weak and, optionally, a strong reference to it.</summary>
         private class Container { public WeakReference<TEntry> Weak; public TEntry Strong; public int UseCount; public DateTime ValidStamp; }
         /// <summary>The actual keyed cache.</summary>
-        private Dictionary<TKey, Container> _cache = new Dictionary<TKey, Container>();
+        private readonly Dictionary<TKey, Container> _cache = new Dictionary<TKey, Container>();
         /// <summary>The root for all strongly-referenced entries.</summary>
-        private HashSet<Container> _strong = new HashSet<Container>();
+        private readonly HashSet<Container> _strong = new HashSet<Container>();
 
         /// <summary>Incremented every time an entry is looked up and an existing entry is already available.</summary>
         public int Hits { get; private set; }
@@ -59,8 +59,7 @@ namespace TankIconMaker
             var now = DateTime.UtcNow;
             lock (_cache)
             {
-                Container c;
-                if (!_cache.TryGetValue(key, out c))
+                if (!_cache.TryGetValue(key, out Container c))
                     _cache[key] = c = new Container();
 
                 // Gets are counted to prioritize eviction; the count is maintained even if the weak reference gets GC’d
@@ -99,14 +98,14 @@ namespace TankIconMaker
                     CurrentSize += nowSize;
                 }
                 if (CurrentSize > MaximumSize)
-                    evictStrong();
+                    EvictStrong();
 
                 return entry;
             }
         }
 
         /// <summary>Evicts entries from the strongly-referenced cache until the <see cref="MaximumSize"/> is satisfied.</summary>
-        private void evictStrong()
+        private void EvictStrong()
         {
             while (CurrentSize > MaximumSize && _strong.Count > 0)
             {
@@ -162,7 +161,7 @@ namespace TankIconMaker
     /// </summary>
     static class ZipCache
     {
-        private static Cache<string, ZipCacheEntry> _cache = new Cache<string, ZipCacheEntry> { MaximumSize = 1 * 1024 * 1024 };
+        private static readonly Cache<string, ZipCacheEntry> _cache = new Cache<string, ZipCacheEntry> { MaximumSize = 1 * 1024 * 1024 };
 
         /// <summary>Empties the cache completely, resetting it to blank state.</summary>
         public static void Clear() { _cache.Clear(); }
@@ -191,7 +190,7 @@ namespace TankIconMaker
     {
         public ZipFile Zip { get; private set; }
 
-        private string _path;
+        private readonly string _path;
         private DateTime _lastModified;
 
         public ZipCacheEntry(string path)
@@ -227,7 +226,7 @@ namespace TankIconMaker
     /// </summary>
     static class ImageCache
     {
-        private static Cache<string, ImageEntry> _cache = new Cache<string, ImageEntry> { MaximumSize = 10 * 1024 * 1024 };
+        private static readonly Cache<string, ImageEntry> _cache = new Cache<string, ImageEntry> { MaximumSize = 10 * 1024 * 1024 };
 
         /// <summary>Empties the cache completely, resetting it to blank state.</summary>
         public static void Clear() { _cache.Clear(); }
@@ -284,7 +283,7 @@ namespace TankIconMaker
 
     sealed class FileImageEntry : ImageEntry
     {
-        private string _path;
+        private readonly string _path;
         private DateTime _lastModified;
 
         public FileImageEntry(string path)

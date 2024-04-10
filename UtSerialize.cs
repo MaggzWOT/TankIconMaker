@@ -11,7 +11,7 @@ namespace TankIconMaker
     /// <summary>
     /// Enables <see cref="XmlClassify"/> to save color properties as strings of a human-editable form.
     /// </summary>
-    sealed class colorTypeOptions : ClassifyTypeOptions,
+    sealed class ColorTypeOptions : ClassifyTypeOptions,
         IClassifySubstitute<W.Color, string>,
         IClassifySubstitute<D.Color, string>
     {
@@ -56,7 +56,7 @@ namespace TankIconMaker
     /// Filters lists of <see cref="LayerBase"/> objects before XmlClassify attempts to decode them, removing all
     /// entries pertaining to layer types that no longer exist in the assembly and hence can't possibly be instantiated.
     /// </summary>
-    sealed class listLayerBaseOptions : ClassifyTypeOptions, IClassifyXmlTypeProcessor
+    sealed class ListLayerBaseOptions : ClassifyTypeOptions, IClassifyXmlTypeProcessor
     {
         void IClassifyTypeProcessor<XElement>.AfterSerialize(object obj, XElement element) { }
         void IClassifyTypeProcessor<XElement>.AfterDeserialize(object obj, XElement element) { }
@@ -78,7 +78,7 @@ namespace TankIconMaker
     /// Filters lists of <see cref="EffectBase"/> objects before XmlClassify attempts to decode them, removing all
     /// entries pertaining to layer types that no longer exist in the assembly and hence can't possibly be instantiated.
     /// </summary>
-    sealed class listEffectBaseOptions : ClassifyTypeOptions, IClassifyXmlTypeProcessor
+    sealed class ListEffectBaseOptions : ClassifyTypeOptions, IClassifyXmlTypeProcessor
     {
         void IClassifyTypeProcessor<XElement>.AfterSerialize(object obj, XElement element) { }
         void IClassifyTypeProcessor<XElement>.AfterDeserialize(object obj, XElement element) { }

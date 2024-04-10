@@ -201,7 +201,7 @@ namespace TankIconMaker
                 Radius = radius;
             }
 
-            private double sinc(double x)
+            private double Sinc(double x)
             {
                 if (x == 0)
                     return 1;
@@ -215,7 +215,7 @@ namespace TankIconMaker
                     x = -x;
                 if (x >= Radius)
                     return 0;
-                return sinc(x) * sinc(x / Radius);
+                return Sinc(x) * Sinc(x / Radius);
             }
         }
 

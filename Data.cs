@@ -8,7 +8,7 @@ namespace TankIconMaker
 {
     class Tank : WotTank
     {
-        private Action<string> _addWarning;
+        private readonly Action<string> _addWarning;
 
         /// <param name="addWarning">
         ///     The method to be used to add warnings about this tank's rendering.</param>

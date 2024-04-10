@@ -1,11 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34729.46
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankIconMaker", "TankIconMaker.csproj", "{27F36EFA-6438-462F-A31A-2B2ABC214EBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfCrutches", "WpfCrutches\WpfCrutches.csproj", "{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WotDataLib", "..\WotDataLib\WotDataLib.csproj", "{77E86E2B-89DF-43D2-8EFA-6ECCD961465E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WotDataLib", "WotDataLib\WotDataLib.csproj", "{77E86E2B-89DF-43D2-8EFA-6ECCD961465E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfCrutches", "..\WpfCrutches\WpfCrutches.csproj", "{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,16 +19,19 @@ Global
 		{27F36EFA-6438-462F-A31A-2B2ABC214EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27F36EFA-6438-462F-A31A-2B2ABC214EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27F36EFA-6438-462F-A31A-2B2ABC214EBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77E86E2B-89DF-43D2-8EFA-6ECCD961465E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77E86E2B-89DF-43D2-8EFA-6ECCD961465E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77E86E2B-89DF-43D2-8EFA-6ECCD961465E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77E86E2B-89DF-43D2-8EFA-6ECCD961465E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07420E58-8087-48FB-9C24-AE0DFD2A3AD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {398630F6-A9C9-4491-86C1-BCB83F62BE36}
 	EndGlobalSection
 EndGlobal
