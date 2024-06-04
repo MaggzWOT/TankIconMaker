@@ -11,8 +11,8 @@ namespace TankIconMaker
 {
     partial class BulkSaveSettingsWindow : ManagedWindow, INotifyPropertyChanged
     {
-        private WotContext _context;
-        private Style _style;
+        private readonly WotContext _context;
+        private readonly Style _style;
 
         /// <summary>A template for the path where the icons are to be saved.</summary>
         public string PathTemplate { get { return _PathTemplate; } set { _PathTemplate = value; NotifyPropertyChanged("PathTemplate"); } }
@@ -179,7 +179,7 @@ namespace TankIconMaker
         private void NotifyPropertyChanged(string name) { PropertyChanged(this, new PropertyChangedEventArgs(name)); }
         public event PropertyChangedEventHandler PropertyChanged = (_, __) => { };
 
-        private void ok(object sender, RoutedEventArgs e)
+        private void Ok(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
         }
@@ -191,7 +191,7 @@ namespace TankIconMaker
             return wnd;
         }
 
-        private void ctEditPathTemplate_Click(object _, RoutedEventArgs __)
+        private void CtEditPathTemplate_Click(object _, RoutedEventArgs __)
         {
             var value = PathTemplateWindow.Show(this, PathTemplate, _context, _style, SaveType.Icons);
             if (value == null)
@@ -200,7 +200,7 @@ namespace TankIconMaker
             IconsBulkSaveEnabled = true;
         }
 
-        private void ctEditBattleAtlasPathTemplate_Click(object _, RoutedEventArgs __)
+        private void CtEditBattleAtlasPathTemplate_Click(object _, RoutedEventArgs __)
         {
             var value = PathTemplateWindow.Show(this, BattleAtlasPathTemplate, _context, _style, SaveType.BattleAtlas);
             if (value == null)
@@ -209,7 +209,7 @@ namespace TankIconMaker
             BattleAtlasBulkSaveEnabled = true;
         }
 
-        private void ctEditVehicleMarkersAtlasPathTemplate_Click(object _, RoutedEventArgs __)
+        private void CtEditVehicleMarkersAtlasPathTemplate_Click(object _, RoutedEventArgs __)
         {
             var value = PathTemplateWindow.Show(this, VehicleMarkersAtlasPathTemplate, _context, _style, SaveType.VehicleMarkerAtlas);
             if (value == null)
@@ -218,7 +218,7 @@ namespace TankIconMaker
             VehicleMarkersAtlasBulkSaveEnabled = true;
         }
 
-        private void ctEditCustomAtlasPathTemplate_Click(object sender, RoutedEventArgs e)
+        private void CtEditCustomAtlasPathTemplate_Click(object sender, RoutedEventArgs e)
         {
             var value = PathTemplateWindow.Show(this, CustomAtlasPathTemplate, _context, _style, SaveType.CustomAtlas);
             if (value == null)
