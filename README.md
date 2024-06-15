@@ -11,9 +11,6 @@ Fixed builtins files for event tanks
 Cleaned up a ton of code that now supports VS 2019 
 
 
-
-
-
 <u>Current atlas build height:</u> 4096 x 5120
 
 
