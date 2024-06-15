@@ -14,7 +14,7 @@ Cleaned up a ton of code that now supports VS 2019
 
 
 
-
+<u>Current atlas build height:</u> 4096 x 5120
 
 
 <u>What i want to add in the future:</u>
