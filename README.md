@@ -1,5 +1,8 @@
 
 # This is a forked project from original author, i am really only updating this as it seemed like a dead project and had not been updated for newer game instances. 
+## Requirements
+- .NET Framework 4.0 or higher  https://www.microsoft.com/download/en/details.aspx?id=30653
+- VC++ 2013 Redistributable  https://www.microsoft.com/en-gb/download/details.aspx?id=40784
 
 ## Now for the things i have fixed or changed:
 
