@@ -5,9 +5,7 @@
 - VC++ 2013 Redistributable  https://www.microsoft.com/en-gb/download/details.aspx?id=40784
 
 ## Now for the things i have fixed or changed:
-
-- Updated dependancies:
-  This now needs .Net Framework 3.5.1
+- cleaned up dependancies (removed need to go to 3.5.1)
 - Fixed wheeled vehicle errors
 - Fixed builtins files for event tanks
 - Cleaned up a ton of code that now supports VS 2019
